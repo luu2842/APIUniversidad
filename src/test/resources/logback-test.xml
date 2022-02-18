@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+ <logger name="org.springframework" level= "WARM"/>
+ <logger name = "org.hibernate.dialect.Dialect " level="WARM"></logger>
+</configuration>

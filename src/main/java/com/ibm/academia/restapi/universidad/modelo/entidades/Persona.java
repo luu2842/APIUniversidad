@@ -17,6 +17,11 @@ import javax.persistence.InheritanceType;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,21 +33,41 @@ import lombok.Setter;
 @Entity
 @Table(name = "personas", schema = "universidad")
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(
+		use = JsonTypeInfo.Id.NAME,
+		include = JsonTypeInfo.As.PROPERTY,
+		property = "tipo"
+)
+@JsonSubTypes(
+		{
+			@JsonSubTypes.Type(value = Alumno.class, name = "alumno"),
+			@JsonSubTypes.Type(value = Profesor.class, name = "profesor"),
+			@JsonSubTypes.Type(value = Empleado.class, name = "empleado")
+})
+
 public abstract class Persona implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+    @NotNull(message = "No puede ser nulo")
+	@NotEmpty(message = "No puede estar vacio")
 	@Column(name = "nombre", nullable = false, length = 60)
 	private String nombre;
 	
+    @NotNull(message = "No puede ser nulo")
+	@NotEmpty(message = "No puede estar vacio")
 	@Column(name = "apellido", nullable = false, length = 60)
 	private String apellido;
 	
+    @NotNull(message = "No puede ser nulo")
+	@NotEmpty(message = "No puede estar vacio")
 	@Column(name = "dni", nullable = false, unique = true, length = 10)
 	private String dni;
 	
+    @NotNull(message = "No puede ser nulo")
+	@NotEmpty(message = "No puede estar vacio")
 	@Column(name = "usuario_creacion", nullable = false)
 	private String usuarioCreacion;
 		

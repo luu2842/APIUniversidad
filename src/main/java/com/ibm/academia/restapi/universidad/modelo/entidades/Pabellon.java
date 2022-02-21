@@ -18,6 +18,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Getter; 
 import lombok.NoArgsConstructor;
@@ -38,9 +42,11 @@ public class Pabellon implements Serializable
 	@Column(name = "metros_cuadrados")
 	private Double metrosCuadrados;
 	
+    @NotNull(message = "No puede ser nulo")
+	@NotEmpty(message = "No puede estar vacio")
 	@Column(name = "nombre", nullable = false, length = 60)
 	private String nombre;
-	
+
 	@Embedded
 	@AttributeOverrides({
 		@AttributeOverride(name = "codigoPostal", column = @Column(name = "codigo_postal")),
@@ -48,6 +54,8 @@ public class Pabellon implements Serializable
 	})
 	private Direccion direccion;
 	
+    @NotNull(message = "No puede ser nulo")
+	@NotEmpty(message = "No puede estar vacio")
 	@Column(name = "usuario_creacion", nullable = false)
 	private String usuarioCreacion;
 	
@@ -58,6 +66,7 @@ public class Pabellon implements Serializable
 	private Date fechaModificacion;
 	
 	@OneToMany(mappedBy = "pabellon", fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({"aulas"})
 	private Set<Aula> aulas;
 	
 	public Pabellon(Long id, Double metrosCuadrados, String nombre, Direccion direccion, String usuarioCreacion) {
